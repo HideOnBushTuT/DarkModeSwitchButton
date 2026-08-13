@@ -30,14 +30,14 @@ Expected: `DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace` and package source
 
 - [x] **Step 2: Add repeatable XcodeBuildMCP defaults**
 
-Create `.xcodebuildmcp/config.yaml` with the workspace, `DarkModeSwitchDemo` scheme, Debug configuration, and `iPhone 17 Pro` simulator defaults.
+Create `.xcodebuildmcp/config.yaml` with the workspace, `DarkModeSwitchDemo` scheme, Debug configuration, and `iPhone Air` simulator defaults.
 
 - [x] **Step 3: Confirm the generated project builds before modification**
 
 Run:
 
 ```bash
-xcodebuildmcp simulator build --workspace-path DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace --scheme DarkModeSwitchDemo --simulator-name "iPhone 17 Pro" --configuration Debug
+xcodebuildmcp simulator build --workspace-path DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace --scheme DarkModeSwitchDemo --simulator-name "iPhone Air" --configuration Debug
 ```
 
 Expected: build succeeds.
@@ -56,7 +56,7 @@ git commit -m "chore(ios): scaffold SwiftUI demo"
 - Create: `DarkModeSwitchDemo/DarkModeSwitchDemoPackage/Sources/DarkModeSwitchDemoFeature/DarkModeToggleMetrics.swift`
 - Modify: `DarkModeSwitchDemo/DarkModeSwitchDemoPackage/Tests/DarkModeSwitchDemoFeatureTests/DarkModeSwitchDemoFeatureTests.swift`
 
-- [ ] **Step 1: Write failing metric tests**
+- [x] **Step 1: Write failing metric tests**
 
 Test a 130-point-wide control and assert:
 
@@ -68,25 +68,25 @@ XCTAssertEqual(metrics.translationX(isDarkMode: false), -90.17341040, accuracy: 
 XCTAssertEqual(metrics.translationX(isDarkMode: true), -22.54335260, accuracy: 0.0001)
 ```
 
-- [ ] **Step 2: Run tests and confirm the expected failure**
+- [x] **Step 2: Run tests and confirm the expected failure**
 
 Run:
 
 ```bash
-xcodebuildmcp simulator test --workspace-path DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace --scheme DarkModeSwitchDemo --simulator-name "iPhone 17 Pro" --configuration Debug
+xcodebuildmcp simulator test --workspace-path DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace --scheme DarkModeSwitchDemo --simulator-name "iPhone Air" --configuration Debug
 ```
 
 Expected: compilation fails because `DarkModeToggleMetrics` does not exist.
 
-- [ ] **Step 3: Implement deterministic source-to-SwiftUI geometry**
+- [x] **Step 3: Implement deterministic source-to-SwiftUI geometry**
 
 Define the 173×69 track artboard, 173×84 celestial artboard, 130×80 reference component, 1.2 celestial width multiplier, and source translations of −100/−25.
 
-- [ ] **Step 4: Run tests and confirm they pass**
+- [x] **Step 4: Run tests and confirm they pass**
 
 Expected: all metric tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add DarkModeSwitchDemo
@@ -148,7 +148,7 @@ Expose `DarkModeToggle(isDarkMode:)`, preserve the source 130:80 component aspec
 Run:
 
 ```bash
-xcodebuildmcp simulator build --workspace-path DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace --scheme DarkModeSwitchDemo --simulator-name "iPhone 17 Pro" --configuration Debug
+xcodebuildmcp simulator build --workspace-path DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace --scheme DarkModeSwitchDemo --simulator-name "iPhone Air" --configuration Debug
 ```
 
 Expected: build succeeds.
@@ -202,7 +202,7 @@ git commit -m "feat(app): integrate persistent dark mode demo"
 - [ ] **Step 1: Build and run on the configured simulator**
 
 ```bash
-xcodebuildmcp simulator build-and-run --workspace-path DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace --scheme DarkModeSwitchDemo --simulator-name "iPhone 17 Pro" --configuration Debug
+xcodebuildmcp simulator build-and-run --workspace-path DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace --scheme DarkModeSwitchDemo --simulator-name "iPhone Air" --configuration Debug
 ```
 
 - [ ] **Step 2: Capture both states**

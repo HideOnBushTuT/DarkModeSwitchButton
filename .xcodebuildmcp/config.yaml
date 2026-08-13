@@ -8,5 +8,5 @@ enabledWorkflows:
 sessionDefaults:
   workspacePath: "./DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace"
   scheme: "DarkModeSwitchDemo"
-  simulatorName: "iPhone 17 Pro"
+  simulatorName: "iPhone Air"
   configuration: "Debug"

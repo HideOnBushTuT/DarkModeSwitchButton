@@ -30,9 +30,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:DarkModeSwitchDemo.xctestplan">
-         </TestPlanReference>
-         <TestPlanReference
             reference = "container:DarkModeSwitchDemo/DarkModeSwitchDemo.xctestplan"
             default = "YES">
          </TestPlanReference>
