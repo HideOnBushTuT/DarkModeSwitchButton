@@ -19,7 +19,7 @@ Kolodziejski 的 Power Apps 明暗模式开关，并把它作为真正的 App �
 - [DarkModeToggle](https://github.com/HideOnBushTuT/DarkModeToggle)：
   独立 Swift Package，保存组件源码、几何/素材测试和版本 Tag。
 
-App 当前通过 `DarkModeToggle 3.0.0` 使用组件，`Package.resolved` 锁定了
+App 当前通过 `DarkModeToggle 3.0.1` 使用组件，`Package.resolved` 锁定了
 实际提交，Clone 后不需要再复制源码。
 
 ## 运行环境
@@ -63,7 +63,7 @@ cd DarkModeSwitchButton
 
 选择 `DarkModeSwitchDemo` Scheme 和一个 iPhone Simulator，然后 Run。
 Xcode 会读取 `Package.resolved` 并下载
-`https://github.com/HideOnBushTuT/DarkModeToggle.git` 的 `3.0.0` 版本。
+`https://github.com/HideOnBushTuT/DarkModeToggle.git` 的 `3.0.1` 版本。
 
 使用 XcodeBuildMCP 构建：
 
@@ -376,12 +376,12 @@ git ls-remote https://github.com/HideOnBushTuT/DarkModeToggle.git
 
 ### Package 版本无法解析
 
-确认远端存在 `3.0.0` Tag，项目中的
+确认远端存在 `3.0.1` Tag，项目中的
 `Package.resolved` 应显示：
 
 - Identity：`darkmodetoggle`
-- Version：`3.0.0`
-- Revision：`541a02d972c1c9e9af686f830178aecc8c353045`
+- Version：`3.0.1`
+- Revision：`00e4a929b9b8c1e46455703fb0aa617f917b8a8d`
 
 如果要开发 Package，请单独 Clone `DarkModeToggle`，提交并发布新版本；
 不要在 App 仓库中重新创建同名本地 Package 目录。
