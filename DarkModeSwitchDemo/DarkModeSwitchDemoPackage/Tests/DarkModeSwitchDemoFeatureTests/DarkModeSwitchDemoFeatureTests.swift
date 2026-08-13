@@ -41,10 +41,11 @@ struct DarkModeToggleArtTests {
     func sourceStars() {
         let stars = DarkModeToggleArt.stars
 
-        #expect(stars.count == 21)
+        #expect(stars.count == 22)
         #expect(stars.filter { $0.group == 0 }.count == 2)
         #expect(DarkModeToggleArt.starDurations == [1: 3, 2: 2, 3: 1, 4: 5])
         #expect(stars[0] == ArtStar(group: 1, x: 16.95, y: 23.45, radius: 1.95))
-        #expect(stars[20] == ArtStar(group: 3, x: 45.55, y: 26.05, radius: 0.65))
+        #expect(stars[19] == ArtStar(group: 1, x: 83.25, y: 39.05, radius: 0.65))
+        #expect(stars.last == ArtStar(group: 3, x: 45.55, y: 26.05, radius: 0.65))
     }
 }

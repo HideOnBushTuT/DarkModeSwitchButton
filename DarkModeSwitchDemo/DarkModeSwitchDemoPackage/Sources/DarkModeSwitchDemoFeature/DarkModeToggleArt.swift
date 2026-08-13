@@ -15,6 +15,15 @@ struct ArtStar: Equatable, Sendable {
     let x: Double
     let y: Double
     let radius: Double
+    let blurRadius: Double
+
+    init(group: Int, x: Double, y: Double, radius: Double, blurRadius: Double = 0) {
+        self.group = group
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.blurRadius = blurRadius
+    }
 }
 
 enum DarkModeToggleArt {
@@ -76,7 +85,7 @@ enum DarkModeToggleArt {
         ArtStar(group: 4, x: 28.65, y: 36.45, radius: 0.65),
         ArtStar(group: 1, x: 18.25, y: 45.55, radius: 0.65),
         ArtStar(group: 2, x: 32.875, y: 58.875, radius: 0.975),
-        ArtStar(group: 0, x: 15.975, y: 32.875, radius: 0.975),
+        ArtStar(group: 0, x: 15.975, y: 32.875, radius: 0.975, blurRadius: 0.13),
         ArtStar(group: 3, x: 10.45, y: 52.05, radius: 0.65),
         ArtStar(group: 4, x: 42.95, y: 49.45, radius: 0.65),
         ArtStar(group: 1, x: 31.25, y: 15.65, radius: 0.65),
@@ -87,8 +96,9 @@ enum DarkModeToggleArt {
         ArtStar(group: 2, x: 68.95, y: 26.05, radius: 0.65),
         ArtStar(group: 3, x: 63.75, y: 40.35, radius: 0.65),
         ArtStar(group: 1, x: 70.575, y: 34.175, radius: 0.975),
-        ArtStar(group: 0, x: 56.275, y: 22.475, radius: 0.975),
-        ArtStar(group: 1, x: 50.75, y: 40.35, radius: 0.65),
+        ArtStar(group: 0, x: 56.275, y: 22.475, radius: 0.975, blurRadius: 0.13),
+        ArtStar(group: 1, x: 50.75, y: 40.35, radius: 0.65, blurRadius: 0.13),
+        ArtStar(group: 1, x: 83.25, y: 39.05, radius: 0.65),
         ArtStar(group: 2, x: 76.75, y: 13.05, radius: 0.65),
         ArtStar(group: 3, x: 45.55, y: 26.05, radius: 0.65),
     ]

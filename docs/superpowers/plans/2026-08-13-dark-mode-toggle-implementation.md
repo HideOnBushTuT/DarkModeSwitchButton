@@ -131,19 +131,19 @@ git commit -m "feat(toggle): encode source artwork data"
 - Create: `DarkModeSwitchDemo/DarkModeSwitchDemoPackage/Sources/DarkModeSwitchDemoFeature/CelestialThumb.swift`
 - Create: `DarkModeSwitchDemo/DarkModeSwitchDemoPackage/Sources/DarkModeSwitchDemoFeature/DarkModeToggle.swift`
 
-- [ ] **Step 1: Render the two clipped track scenes**
+- [x] **Step 1: Render the two clipped track scenes**
 
 Use `#A2D1FD` for day and `#1F2533` for night. Crossfade the two scenes over 0.5 seconds. Animate each cloud group from source Y offset `+5` to `−10` with its source duration, repeating autoreversing. Animate the four star groups between transparent and opaque with 3/2/1/5-second durations.
 
-- [ ] **Step 2: Render the sun and moon in the shared celestial layer**
+- [x] **Step 2: Render the sun and moon in the shared celestial layer**
 
 Reproduce the source rounded celestial dimensions, glow/drop shadows, moon occlusion path, and pale moon fill. Crossfade sun/moon over 0.5 seconds while translating the shared layer from source X `−100` to `−25` over 1 second.
 
-- [ ] **Step 3: Compose a dedicated dark-mode control**
+- [x] **Step 3: Compose a dedicated dark-mode control**
 
 Expose `DarkModeToggle(isDarkMode:)`, preserve the source 130:80 component aspect, center the 173:69 track inside it, and render the celestial layer at 1.2× the track width. Add hit testing, accessibility label/value, identifier `darkModeToggle`, and Reduce Motion handling.
 
-- [ ] **Step 4: Build and fix compile issues**
+- [x] **Step 4: Build and fix compile issues**
 
 Run:
 
@@ -153,7 +153,7 @@ xcodebuildmcp simulator build --workspace-path DarkModeSwitchDemo/DarkModeSwitch
 
 Expected: build succeeds.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add DarkModeSwitchDemo
