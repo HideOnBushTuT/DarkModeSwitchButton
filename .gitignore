@@ -1,7 +1,28 @@
+# macOS
 .DS_Store
+
+# Xcode user settings
+xcuserdata/
+*.xcuserstate
+
+# Xcode build products and app packaging
 DerivedData/
 build/
-*.xcuserstate
-xcuserdata/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+.build/
 .swiftpm/
+
+# Repository worktrees
 .worktrees/
+
+# Generated top-level workspace; open the project directly instead.
+/DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace/
