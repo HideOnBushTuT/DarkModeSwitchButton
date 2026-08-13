@@ -19,7 +19,7 @@ Kolodziejski 的 Power Apps 明暗模式开关，并把它作为真正的 App �
 - [DarkModeToggle](https://github.com/HideOnBushTuT/DarkModeToggle)：
   独立 Swift Package，保存组件源码、几何/素材测试和版本 Tag。
 
-App 当前通过 `DarkModeToggle 1.0.0` 使用组件，`Package.resolved` 锁定了
+App 当前通过 `DarkModeToggle 2.0.0` 使用组件，`Package.resolved` 锁定了
 实际提交，Clone 后不需要再复制源码。
 
 ## 运行环境
@@ -63,7 +63,7 @@ cd DarkModeSwitchButton
 
 选择 `DarkModeSwitchDemo` Scheme 和一个 iPhone Simulator，然后 Run。
 Xcode 会读取 `Package.resolved` 并下载
-`https://github.com/HideOnBushTuT/DarkModeToggle.git` 的 `1.0.0` 版本。
+`https://github.com/HideOnBushTuT/DarkModeToggle.git` 的 `2.0.0` 版本。
 
 使用 XcodeBuildMCP 构建：
 
@@ -81,7 +81,10 @@ xcodebuildmcp simulator build \
 DarkModeSwitchButton (App repo)
 ├── DarkModeSwitchDemo/
 │   ├── Config/                          # Bundle、版本、iOS 目标配置
-│   ├── DarkModeSwitchDemo/              # @main App 壳与测试计划
+│   ├── DarkModeSwitchDemo/
+│   │   ├── DarkModeSwitchDemoApp.swift  # @main App 入口
+│   │   ├── ContentView.swift            # 状态、页面布局与 App 外观
+│   │   └── DarkModeSwitchDemo.xctestplan
 │   ├── DarkModeSwitchDemoUITests/       # App 集成与持久化测试
 │   ├── DarkModeSwitchDemo.xcodeproj/
 │   │   └── …/Package.resolved           # Project 打开方式的依赖锁
@@ -95,7 +98,6 @@ DarkModeSwitchButton (App repo)
 DarkModeToggle (Package repo)
 ├── Package.swift
 ├── Sources/DarkModeSwitchDemoFeature/
-│   ├── ContentView.swift
 │   ├── DarkModeToggle.swift
 │   ├── DarkModeToggleMetrics.swift
 │   ├── DarkModeToggleArt.swift
@@ -111,7 +113,6 @@ DarkModeToggle (Package repo)
 App Target 保持很薄：
 
 ```swift
-import DarkModeSwitchDemoFeature
 import SwiftUI
 
 @main
@@ -124,9 +125,10 @@ struct DarkModeSwitchDemoApp: App {
 }
 ```
 
-组件实现由远程 Package 的 `DarkModeSwitchDemoFeature` Product 提供。仓库名
-是 `DarkModeToggle`，Product/`import` 名暂时保留原模块名称，避免仅为发布
-而产生公开 API 重命名。
+App 本地 `ContentView.swift` 导入 `DarkModeSwitchDemoFeature` 并组合
+`DarkModeToggle`。远程 Package 只提供可复用组件，不再决定 App 如何持久化
+状态、绘制页面背景或应用明暗外观。仓库名是 `DarkModeToggle`，Product/
+`import` 名暂时保留原模块名称，避免仅为发布而产生公开 API 重命名。
 
 ## SwiftUI 状态流
 
@@ -144,7 +146,7 @@ DarkModeToggle(isDarkMode: $isDarkMode)
 ```text
 UserDefaults
     ⇅ @AppStorage("isDarkMode")
-ContentView
+ContentView (App repository)
     ├── Binding<Bool> ──→ DarkModeToggle ── Button.tap() ──→ toggle()
     ├── preferredColorScheme ──→ 整个 WindowGroup 的 Light/Dark 外观
     └── screenBackground ──→ 演示页背景色
@@ -280,9 +282,9 @@ SPM 不是实现动画的必要条件。把所有 Swift 文件直接放进 App T
 
 主要收益：
 
-- **模块边界清晰**：App 只依赖公开的 `DarkModeToggle` /
-  `ContentView`，内部绘制细节不泄漏给调用方。
-- **独立版本**：通过 `1.0.0` Tag 和语义化版本控制组件升级。
+- **模块边界清晰**：App 只依赖公开的 `DarkModeToggle`，内部绘制细节不泄漏
+  给调用方；`ContentView` 明确保留在 App。
+- **独立版本**：通过 `2.0.0` Tag 和语义化版本控制组件升级。
 - **可复用**：其他有权限的 App 可以直接添加 GitHub Package URL。
 - **测试独立**：几何与源素材测试不需要启动演示 App。
 - **历史独立**：Package 仓库保留从几何测试、素材数据到动画实现的相关提交。
@@ -299,9 +301,10 @@ Demo，放在同一仓库的本地 Package 或 App Target 也完全合理。
 
 ## 测试策略与命令
 
-### Package：4 项 Swift Testing 测试
+### Package：5 项 Swift Testing 测试
 
-Package 测试锁定源几何、天体位移、四组云数据和 22 颗星星数据：
+Package 测试锁定源几何、天体位移、四组云数据、22 颗星星数据以及
+`ContentView` 不会重新进入 Package 的架构边界：
 
 ```bash
 gh repo clone HideOnBushTuT/DarkModeToggle
@@ -347,12 +350,12 @@ git ls-remote https://github.com/HideOnBushTuT/DarkModeToggle.git
 
 ### Package 版本无法解析
 
-确认远端存在 `1.0.0` Tag，项目中的
+确认远端存在 `2.0.0` Tag，项目中的
 `Package.resolved` 应显示：
 
 - Identity：`darkmodetoggle`
-- Version：`1.0.0`
-- Revision：`d3838e2b164ee318864354785b50eb64bbaed24b`
+- Version：`2.0.0`
+- Revision：`6709fed52e17bd02ff0d3540e4c3b1bad8c2dffb`
 
 如果要开发 Package，请单独 Clone `DarkModeToggle`，提交并发布新版本；
 不要在 App 仓库中重新创建同名本地 Package 目录。
@@ -371,6 +374,8 @@ git ls-remote https://github.com/HideOnBushTuT/DarkModeToggle.git
 - [SwiftUI 实施计划](docs/superpowers/plans/2026-08-13-dark-mode-toggle-implementation.md)
 - [双仓库拆分设计](docs/superpowers/specs/2026-08-13-github-repository-split-design.md)
 - [双仓库发布计划](docs/superpowers/plans/2026-08-13-private-repository-split-implementation.md)
+- [ContentView 职责迁移设计](docs/superpowers/specs/2026-08-13-content-view-ownership-design.md)
+- [ContentView 职责迁移计划](docs/superpowers/plans/2026-08-13-content-view-ownership-implementation.md)
 
 ## 设计来源与许可证
 

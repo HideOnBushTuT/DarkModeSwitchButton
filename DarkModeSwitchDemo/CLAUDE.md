@@ -9,7 +9,7 @@ The application consumes the private `DarkModeToggle` Swift Package from:
 https://github.com/HideOnBushTuT/DarkModeToggle.git
 ```
 
-The resolved release is `1.0.0`. The Swift product and import name are
+The resolved release is `2.0.0`. The Swift product and import name are
 `DarkModeSwitchDemoFeature`.
 
 ## Repository boundary
@@ -17,13 +17,14 @@ The resolved release is `1.0.0`. The Swift product and import name are
 `DarkModeSwitchButton` owns:
 
 - the `@main` application shell
+- `ContentView`, `@AppStorage`, page layout, and preferred App appearance
 - Xcode project, workspace, build configuration, and entitlements
 - application UI tests
 - screenshots and project documentation
 
 `DarkModeToggle` owns:
 
-- `ContentView` and `DarkModeToggle`
+- `DarkModeToggle` and its public `Binding<Bool>` API
 - all scene drawing and animation code
 - geometry and source-art data
 - Package unit tests and release tags
@@ -40,7 +41,8 @@ a new semantic version.
   state.
 - Split complex drawing into focused `View` and `Shape` types.
 - Preserve Reduce Motion and VoiceOver behavior when changing the toggle.
-- Keep the app shell free of feature implementation.
+- Keep reusable drawing inside the Package and App appearance orchestration in
+  the local `ContentView`.
 
 ## Build and test
 
