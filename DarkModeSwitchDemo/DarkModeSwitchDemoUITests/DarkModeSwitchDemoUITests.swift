@@ -6,7 +6,8 @@ final class DarkModeSwitchDemoUITests: XCTestCase {
     }
 
     @MainActor
-    func testSystemModeUsesLightSystemAppearance() throws {
+    func testSystemModeUpdatesWhenDeviceAppearanceChangesWithoutRelaunch() throws {
+        defer { XCUIDevice.shared.appearance = .light }
         let app = launchFollowingSystem(appearance: .light)
 
         let toggle = app.buttons["darkModeToggle"]
@@ -16,6 +17,14 @@ final class DarkModeSwitchDemoUITests: XCTestCase {
         let followSystemButton = app.buttons["followSystemAppearanceButton"]
         XCTAssertTrue(followSystemButton.waitForExistence(timeout: 3))
         XCTAssertEqual(followSystemButton.value as? String, "On")
+
+        XCUIDevice.shared.appearance = .dark
+
+        waitForValue("On", on: app.buttons["darkModeToggle"])
+        XCTAssertEqual(
+            app.buttons["followSystemAppearanceButton"].value as? String,
+            "On"
+        )
     }
 
     @MainActor

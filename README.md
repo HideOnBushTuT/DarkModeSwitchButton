@@ -106,13 +106,20 @@ DarkModeToggle (Package repo)
 └── THIRD_PARTY_NOTICES.md
 ```
 
-App Target 保持很薄：
+App Target 保持很薄。下面省略了 UI 测试使用的启动参数；实际的 `init` 还会在
+启动时迁移旧版 `isDarkMode` 偏好：
 
 ```swift
 import SwiftUI
 
 @main
 struct DarkModeSwitchDemoApp: App {
+    init() {
+        AppAppearancePreference.migrateLegacyPreferenceIfNeeded(
+            in: UserDefaults.standard
+        )
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()

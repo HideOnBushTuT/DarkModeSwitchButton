@@ -45,6 +45,35 @@ final class AppAppearancePreferenceTests: XCTestCase {
         }
     }
 
+    func testLegacyLightValueMigratesAndIsRemoved() {
+        withIsolatedDefaults { defaults in
+            defaults.set(false, forKey: AppAppearancePreference.legacyStorageKey)
+
+            AppAppearancePreference.migrateLegacyPreferenceIfNeeded(in: defaults)
+
+            XCTAssertEqual(
+                defaults.string(forKey: AppAppearancePreference.storageKey),
+                AppAppearancePreference.light.rawValue
+            )
+            XCTAssertNil(
+                defaults.object(forKey: AppAppearancePreference.legacyStorageKey)
+            )
+        }
+    }
+
+    func testMissingLegacyValueDoesNotCreateNewPreference() {
+        withIsolatedDefaults { defaults in
+            AppAppearancePreference.migrateLegacyPreferenceIfNeeded(in: defaults)
+
+            XCTAssertNil(
+                defaults.object(forKey: AppAppearancePreference.storageKey)
+            )
+            XCTAssertNil(
+                defaults.object(forKey: AppAppearancePreference.legacyStorageKey)
+            )
+        }
+    }
+
     func testExistingNewPreferenceWinsDuringLegacyCleanup() {
         withIsolatedDefaults { defaults in
             defaults.set(
