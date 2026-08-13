@@ -14,7 +14,7 @@
 
 ### DarkModeToggle repository
 
-- Package.swift declares the iOS 17 library product.
+- Package.swift declares the iOS 17 and macOS 14 library product so standalone package tests have a supported host platform.
 - Sources/DarkModeSwitchDemoFeature contains the reusable toggle.
 - Tests/DarkModeSwitchDemoFeatureTests contains geometry and artwork regression tests.
 - README.md explains installation, usage, implementation, testing, and versioning.
@@ -112,7 +112,7 @@ Run:
       --package-path "$split_root/DarkModeToggle" \
       --configuration Debug
 
-Expected: all four Swift Testing tests pass with zero failures.
+Expected: all four Swift Testing tests pass with zero failures. Package.swift includes `.macOS(.v14)` so this standalone command does not try to compile against SwiftPM's older implicit macOS baseline.
 
 - [ ] **Step 2: Create the private repository**
 

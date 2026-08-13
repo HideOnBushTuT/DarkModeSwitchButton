@@ -30,6 +30,10 @@ The Swift product and import name remain `DarkModeSwitchDemoFeature`. Renaming
 the public module is outside this publishing change and would create unrelated
 source churn.
 
+The package declares iOS 17 and macOS 14. The application remains iPhone-only;
+the macOS declaration lets the independent package compile and run its pure
+geometry/artwork tests through `swift package test` without an app workspace.
+
 The first published release is tagged `1.0.0`.
 
 ### DarkModeSwitchButton
@@ -85,7 +89,7 @@ Before reporting completion:
 
 - resolve the remote package through the application project
 - build the app for an iPhone simulator
-- run package unit tests from the `DarkModeToggle` repository
+- run all four package unit tests from the `DarkModeToggle` repository
 - run application UI tests through the application test plan
 - verify both GitHub repositories are private
 - verify both default branches are `main`
