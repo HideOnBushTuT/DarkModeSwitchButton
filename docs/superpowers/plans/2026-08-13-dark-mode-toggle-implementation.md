@@ -18,7 +18,7 @@
 - Create: `DarkModeSwitchDemo/` using XcodeBuildMCP project scaffolding
 - Modify: `DarkModeSwitchDemo/DarkModeSwitchDemoPackage/Package.swift`
 
-- [ ] **Step 1: Scaffold an iPhone-only iOS 17 project**
+- [x] **Step 1: Scaffold an iPhone-only iOS 17 project**
 
 Run:
 
@@ -28,11 +28,11 @@ xcodebuildmcp project-scaffolding scaffold-ios --json '{"projectName":"DarkModeS
 
 Expected: `DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace` and package source/test targets are created.
 
-- [ ] **Step 2: Add repeatable XcodeBuildMCP defaults**
+- [x] **Step 2: Add repeatable XcodeBuildMCP defaults**
 
 Create `.xcodebuildmcp/config.yaml` with the workspace, `DarkModeSwitchDemo` scheme, Debug configuration, and `iPhone 17 Pro` simulator defaults.
 
-- [ ] **Step 3: Confirm the generated project builds before modification**
+- [x] **Step 3: Confirm the generated project builds before modification**
 
 Run:
 
@@ -42,7 +42,7 @@ xcodebuildmcp simulator build --workspace-path DarkModeSwitchDemo/DarkModeSwitch
 
 Expected: build succeeds.
 
-- [ ] **Step 4: Commit the scaffold**
+- [x] **Step 4: Commit the scaffold**
 
 ```bash
 git add .xcodebuildmcp DarkModeSwitchDemo

@@ -1,0 +1,12 @@
+schemaVersion: 1
+enabledWorkflows:
+  - simulator
+  - project-discovery
+  - project-scaffolding
+  - simulator-management
+  - ui-automation
+sessionDefaults:
+  workspacePath: "./DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace"
+  scheme: "DarkModeSwitchDemo"
+  simulatorName: "iPhone 17 Pro"
+  configuration: "Debug"
