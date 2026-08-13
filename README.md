@@ -8,7 +8,7 @@ An iOS 17+ SwiftUI demo that recreates Kristine Kolodziejski's animated Power Ap
 
 ## Run
 
-Open [`DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace`](DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace) in Xcode, select the `DarkModeSwitchDemo` scheme and run on an iPhone simulator.
+Open either [`DarkModeSwitchDemo/DarkModeSwitchDemo.xcodeproj`](DarkModeSwitchDemo/DarkModeSwitchDemo.xcodeproj) or [`DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace`](DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace) in Xcode, select the `DarkModeSwitchDemo` scheme and run on an iPhone simulator. The workspace also exposes the package's test scheme.
 
 The project can also be built and tested with XcodeBuildMCP:
 
