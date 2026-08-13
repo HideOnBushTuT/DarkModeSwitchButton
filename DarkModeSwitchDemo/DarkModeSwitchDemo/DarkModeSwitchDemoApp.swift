@@ -1,5 +1,4 @@
 import SwiftUI
-import DarkModeSwitchDemoFeature
 
 @main
 struct DarkModeSwitchDemoApp: App {
