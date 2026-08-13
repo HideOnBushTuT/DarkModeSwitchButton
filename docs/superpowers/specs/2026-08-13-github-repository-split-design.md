@@ -66,6 +66,9 @@ The application README explains:
 
 The package README documents installation, the exported product, basic SwiftUI
 usage, implementation layout, test commands, versioning, and license context.
+Package unit tests run in the package repository. After the split, the
+application test plan contains only the application UI test target because a
+consumer project cannot run a remote dependency's internal test target.
 
 ## History and Branch Strategy
 
@@ -82,7 +85,8 @@ Before reporting completion:
 
 - resolve the remote package through the application project
 - build the app for an iPhone simulator
-- run package and UI tests through the workspace test plan
+- run package unit tests from the `DarkModeToggle` repository
+- run application UI tests through the application test plan
 - verify both GitHub repositories are private
 - verify both default branches are `main`
 - verify the package `1.0.0` tag exists remotely
