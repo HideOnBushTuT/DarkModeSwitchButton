@@ -128,35 +128,45 @@ App 本地 `ContentView.swift` 导入 `DarkModeSwitchDemoFeature` 并组合
 
 ## SwiftUI 状态流
 
-核心状态只有一个 Bool：
+App 使用 `system`、`light`、`dark` 三态偏好；Package 仍只接收它需要的
+`Binding<Bool>`：
 
 ```swift
-@AppStorage("isDarkMode") private var isDarkMode = false
+@AppStorage(AppAppearancePreference.storageKey)
+private var storedAppearance = AppAppearancePreference.system.rawValue
+@Environment(\.colorScheme) private var systemColorScheme
 
-DarkModeToggle(isDarkMode: $isDarkMode)
-    .preferredColorScheme(isDarkMode ? .dark : .light)
+DarkModeToggle(isDarkMode: isDarkModeBinding)
+    .preferredColorScheme(appearancePreference.preferredColorScheme)
 ```
 
 数据流如下：
 
 ```text
-UserDefaults
-    ⇅ @AppStorage("isDarkMode")
-ContentView (App repository)
-    ├── Binding<Bool> ⇄ DarkModeToggle 的已提交明暗端点
-    ├── preferredColorScheme ──→ 整个 WindowGroup 的 Light/Dark 外观
-    └── screenBackground ──→ 演示页背景色
+UserDefaults: system / light / dark
+    ⇅ @AppStorage("appearancePreference")
+ContentView + @Environment(\.colorScheme) (App repository)
+    ├── 解析后的 Binding<Bool> ⇄ DarkModeToggle 的已提交明暗端点
+    ├── 可选 preferredColorScheme ──→ App 外观
+    ├── 解析后的 Bool ──→ 演示页背景色
+    └── Follow System 按钮 ──→ system 偏好
 
 DarkModeToggle (Package repository)
     ├── Tap / VoiceOver ──→ 切换 Binding<Bool>
     └── DragGesture ──→ 0...1 呈现进度 ──→ 预测终点 ──→ Binding<Bool>
 ```
 
-- `@AppStorage` 让状态在 App 重启后保留。
+- 新安装默认使用 `system`。此时 `.preferredColorScheme(nil)`，系统设置变化会实时
+  更新开关、页面背景与 App 外观，不需要重启。
+- 手动操作开关会退出跟随系统模式，保存明确的 `light` 或 `dark` 选择；点击
+  `Follow System` 按钮可以随时恢复系统模式。
+- `@AppStorage` 让三态偏好在 App 重启后保留；旧版本的 `isDarkMode` 布尔值会在
+  首次启动时迁移，并删除旧键。
 - `@Binding` 让组件不拥有业务状态，可以接入 `@State`、`@AppStorage`
   或其他单一数据源。
-- `.preferredColorScheme` 把开关值真正应用到 App，而不只是播放一段动画。
-- `isDarkMode` 只保存最终端点；拖动中的画面由 Package 内部连续进度驱动。
+- `.preferredColorScheme` 在手动模式应用明确外观，在系统模式保持 `nil`。
+- App 将三态偏好解析成组件所需的最终明暗端点；拖动中的画面仍由 Package
+  内部连续进度驱动。
 - 松手才把预测终点写回 Binding，不需要计时器协调状态。
 
 ## 交互与动画组件拆解
