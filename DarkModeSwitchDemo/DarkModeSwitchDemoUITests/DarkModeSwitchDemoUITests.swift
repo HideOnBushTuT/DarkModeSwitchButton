@@ -24,6 +24,51 @@ final class DarkModeSwitchDemoUITests: XCTestCase {
     }
 
     @MainActor
+    func testHorizontalDragCommitsOnceAndNextTapStillWorks() throws {
+        let app = launchInLightMode()
+        let toggle = app.buttons["darkModeToggle"]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
+
+        drag(
+            toggle,
+            from: CGVector(dx: 0.15, dy: 0.5),
+            to: CGVector(dx: 1.1, dy: 0.5)
+        )
+        waitForValue("On", on: app.buttons["darkModeToggle"])
+
+        app.buttons["darkModeToggle"].tap()
+        waitForValue("Off", on: app.buttons["darkModeToggle"])
+    }
+
+    @MainActor
+    func testHorizontalDragReversesAndVerticalDragDoesNotToggle() throws {
+        let app = launchInLightMode()
+        let toggle = app.buttons["darkModeToggle"]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
+
+        drag(
+            toggle,
+            from: CGVector(dx: 0.15, dy: 0.5),
+            to: CGVector(dx: 1.1, dy: 0.5)
+        )
+        waitForValue("On", on: app.buttons["darkModeToggle"])
+
+        drag(
+            app.buttons["darkModeToggle"],
+            from: CGVector(dx: 0.85, dy: 0.5),
+            to: CGVector(dx: -0.1, dy: 0.5)
+        )
+        waitForValue("Off", on: app.buttons["darkModeToggle"])
+
+        drag(
+            app.buttons["darkModeToggle"],
+            from: CGVector(dx: 0.5, dy: 0.5),
+            to: CGVector(dx: 0.5, dy: 1.2)
+        )
+        XCTAssertEqual(app.buttons["darkModeToggle"].value as? String, "Off")
+    }
+
+    @MainActor
     func testDarkModePersistsAcrossRelaunch() throws {
         let app = launchInLightMode()
         let toggle = app.buttons["darkModeToggle"]
@@ -47,6 +92,17 @@ final class DarkModeSwitchDemoUITests: XCTestCase {
         app.launchArguments = ["--ui-testing-light-mode"]
         app.launch()
         return app
+    }
+
+    @MainActor
+    private func drag(
+        _ element: XCUIElement,
+        from startOffset: CGVector,
+        to endOffset: CGVector
+    ) {
+        let start = element.coordinate(withNormalizedOffset: startOffset)
+        let end = element.coordinate(withNormalizedOffset: endOffset)
+        start.press(forDuration: 0.05, thenDragTo: end)
     }
 
     @MainActor
