@@ -18,13 +18,6 @@
   "testTargets" : [
     {
       "target" : {
-        "containerPath" : "container:DarkModeSwitchDemoPackage",
-        "identifier" : "DarkModeSwitchDemoFeatureTests",
-        "name" : "DarkModeSwitchDemoFeatureTests"
-      }
-    },
-    {
-      "target" : {
         "containerPath" : "container:DarkModeSwitchDemo.xcodeproj",
         "identifier" : "8B41F65B2DEDD0D6001A66F9",
         "name" : "DarkModeSwitchDemoUITests"
