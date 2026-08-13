@@ -19,7 +19,7 @@ Kolodziejski 的 Power Apps 明暗模式开关，并把它作为真正的 App �
 - [DarkModeToggle](https://github.com/HideOnBushTuT/DarkModeToggle)：
   独立 Swift Package，保存组件源码、几何/素材测试和版本 Tag。
 
-App 当前通过 `DarkModeToggle 2.0.0` 使用组件，`Package.resolved` 锁定了
+App 当前通过 `DarkModeToggle 3.0.0` 使用组件，`Package.resolved` 锁定了
 实际提交，Clone 后不需要再复制源码。
 
 ## 运行环境
@@ -63,7 +63,7 @@ cd DarkModeSwitchButton
 
 选择 `DarkModeSwitchDemo` Scheme 和一个 iPhone Simulator，然后 Run。
 Xcode 会读取 `Package.resolved` 并下载
-`https://github.com/HideOnBushTuT/DarkModeToggle.git` 的 `2.0.0` 版本。
+`https://github.com/HideOnBushTuT/DarkModeToggle.git` 的 `3.0.0` 版本。
 
 使用 XcodeBuildMCP 构建：
 
@@ -99,6 +99,7 @@ DarkModeToggle (Package repo)
 ├── Package.swift
 ├── Sources/DarkModeSwitchDemoFeature/
 │   ├── DarkModeToggle.swift
+│   ├── DarkModeToggleInteraction.swift
 │   ├── DarkModeToggleMetrics.swift
 │   ├── DarkModeToggleArt.swift
 │   ├── DayScene.swift
@@ -147,22 +148,31 @@ DarkModeToggle(isDarkMode: $isDarkMode)
 UserDefaults
     ⇅ @AppStorage("isDarkMode")
 ContentView (App repository)
-    ├── Binding<Bool> ──→ DarkModeToggle ── Button.tap() ──→ toggle()
+    ├── Binding<Bool> ⇄ DarkModeToggle 的已提交明暗端点
     ├── preferredColorScheme ──→ 整个 WindowGroup 的 Light/Dark 外观
     └── screenBackground ──→ 演示页背景色
+
+DarkModeToggle (Package repository)
+    ├── Tap / VoiceOver ──→ 切换 Binding<Bool>
+    └── DragGesture ──→ 0...1 呈现进度 ──→ 预测终点 ──→ Binding<Bool>
 ```
 
 - `@AppStorage` 让状态在 App 重启后保留。
 - `@Binding` 让组件不拥有业务状态，可以接入 `@State`、`@AppStorage`
   或其他单一数据源。
 - `.preferredColorScheme` 把开关值真正应用到 App，而不只是播放一段动画。
-- 所有动画都以 `isDarkMode` 为驱动，不需要计时器协调切换状态。
+- `isDarkMode` 只保存最终端点；拖动中的画面由 Package 内部连续进度驱动。
+- 松手才把预测终点写回 Binding，不需要计时器协调状态。
 
-## 动画组件拆解
+## 交互与动画组件拆解
 
 ```text
 DarkModeToggle
-├── Button + accessibility
+├── Button + accessibility + DragGesture
+├── DarkModeToggleInteraction
+│   └── 方向、进度、钳制与预测终点
+├── DarkModeToggleVisuals
+│   └── 可中断的当前呈现进度
 ├── ToggleTrack
 │   ├── RoundedRectangle 背景、外边框、内高光
 │   ├── DayScene
@@ -227,6 +237,19 @@ var celestialScale: CGFloat {
   依赖位图蒙版。
 - 两者在状态变化时做透明度交叉淡入淡出，同时整个天体画板横向移动。
 
+### 6. 跟手拖动与吸附
+
+组件保留标准 `Binding<Bool>` API，但内部使用 `0...1` 连续进度：
+
+```text
+progress = clamp(startProgress + translationX / translationTravel, 0 ... 1)
+```
+
+移动超过 10 pt 且横向位移占主导后，天体位置、太阳/月亮透明度、日夜天空、
+边框、云层和星星同时跟随这个进度，不增加隐式滞后动画。松手时使用
+`predictedEndTranslation` 推算终点，因此短促滑动也能完成切换；纵向拖动被取消，
+不会误触发按钮。弹簧尚未结束时重新拖动，会从屏幕当前呈现位置继续。
+
 ## 关键尺寸与动画参数
 
 | 参数 | 数值 |
@@ -237,9 +260,9 @@ var celestialScale: CGFloat {
 | 天体层相对轨道宽度 | `1.2×` |
 | Light 天体源 X 位移 | `-100` |
 | Dark 天体源 X 位移 | `-25` |
-| 日/夜场景淡入淡出 | `0.5s` |
-| 太阳/月亮淡入淡出 | `0.5s` |
-| 天体横向移动 | `1.0s` |
+| 拖动识别阈值 | `10 pt` |
+| 松手/点击吸附 | Spring response `0.35` / damping `0.82` |
+| Reduce Motion 自动收尾 | Ease-out `0.2s`，无弹性 |
 | 云层 Y 位移 | `+5 → -10` |
 | 四组云层周期 | `3.5 / 4.5 / 2.5 / 5.5s` |
 | 四组星星周期 | `3 / 2 / 1 / 5s` |
@@ -261,9 +284,10 @@ var celestialScale: CGFloat {
 
 组件读取 `accessibilityReduceMotion`：
 
-- 关闭天体横向移动。
+- 手指直接控制期间仍保持 1:1 跟随。
+- 点击时天体位置直接到达端点，只保留 `0.2s` 场景交叉淡化。
+- 拖动松手后使用 `0.2s` 非弹性收尾。
 - 关闭云层漂浮和星星闪烁的无限循环。
-- 将场景与太阳/月亮切换缩短为 `0.2s` 淡入淡出。
 
 按钮向 VoiceOver 暴露：
 
@@ -284,7 +308,7 @@ SPM 不是实现动画的必要条件。把所有 Swift 文件直接放进 App T
 
 - **模块边界清晰**：App 只依赖公开的 `DarkModeToggle`，内部绘制细节不泄漏
   给调用方；`ContentView` 明确保留在 App。
-- **独立版本**：通过 `2.0.0` Tag 和语义化版本控制组件升级。
+- **独立版本**：通过 `3.0.0` Tag 和语义化版本控制组件升级。
 - **可复用**：其他有权限的 App 可以直接添加 GitHub Package URL。
 - **测试独立**：几何与源素材测试不需要启动演示 App。
 - **历史独立**：Package 仓库保留从几何测试、素材数据到动画实现的相关提交。
@@ -301,10 +325,10 @@ Demo，放在同一仓库的本地 Package 或 App Target 也完全合理。
 
 ## 测试策略与命令
 
-### Package：5 项 Swift Testing 测试
+### Package：9 项 Swift Testing 测试
 
-Package 测试锁定源几何、天体位移、四组云数据、22 颗星星数据以及
-`ContentView` 不会重新进入 Package 的架构边界：
+Package 测试锁定拖动进度、横纵轴判定、预测终点、源几何、天体位移、四组云
+数据、22 颗星星数据，以及 `ContentView` 不会重新进入 Package 的架构边界：
 
 ```bash
 gh repo clone HideOnBushTuT/DarkModeToggle
@@ -313,10 +337,12 @@ xcodebuildmcp swift-package test \
   --configuration Debug
 ```
 
-### App：2 项 XCUITest
+### App：4 项 XCUITest
 
 - 动画尚未结束时快速反向切换，值仍能正确回到 `Off`。
 - 切换到 Dark 后终止并重新启动 App，`@AppStorage` 状态仍为 `On`。
+- 水平拖动可以进入/退出 Dark，且一次手势只提交一次。
+- 纵向拖动不会切换；拖动结束后的下一次点击仍然有效。
 
 ```bash
 xcodebuildmcp simulator test \
@@ -350,12 +376,12 @@ git ls-remote https://github.com/HideOnBushTuT/DarkModeToggle.git
 
 ### Package 版本无法解析
 
-确认远端存在 `2.0.0` Tag，项目中的
+确认远端存在 `3.0.0` Tag，项目中的
 `Package.resolved` 应显示：
 
 - Identity：`darkmodetoggle`
-- Version：`2.0.0`
-- Revision：`6709fed52e17bd02ff0d3540e4c3b1bad8c2dffb`
+- Version：`3.0.0`
+- Revision：`541a02d972c1c9e9af686f830178aecc8c353045`
 
 如果要开发 Package，请单独 Clone `DarkModeToggle`，提交并发布新版本；
 不要在 App 仓库中重新创建同名本地 Package 目录。
@@ -376,6 +402,8 @@ git ls-remote https://github.com/HideOnBushTuT/DarkModeToggle.git
 - [双仓库发布计划](docs/superpowers/plans/2026-08-13-private-repository-split-implementation.md)
 - [ContentView 职责迁移设计](docs/superpowers/specs/2026-08-13-content-view-ownership-design.md)
 - [ContentView 职责迁移计划](docs/superpowers/plans/2026-08-13-content-view-ownership-implementation.md)
+- [3.0 跟手拖动设计](docs/superpowers/specs/2026-08-13-interactive-drag-toggle-design.md)
+- [3.0 跟手拖动实施计划](docs/superpowers/plans/2026-08-13-interactive-drag-toggle-implementation.md)
 
 ## 设计来源与许可证
 
