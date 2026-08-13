@@ -199,29 +199,29 @@ git commit -m "feat(app): integrate persistent dark mode demo"
 - Create: `artifacts/dark-mode.png`
 - Modify: `README.md`
 
-- [ ] **Step 1: Build and run on the configured simulator**
+- [x] **Step 1: Build and run on the configured simulator**
 
 ```bash
 xcodebuildmcp simulator build-and-run --workspace-path DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace --scheme DarkModeSwitchDemo --simulator-name "iPhone Air" --configuration Debug
 ```
 
-- [ ] **Step 2: Capture both states**
+- [x] **Step 2: Capture both states**
 
 Use XcodeBuildMCP UI automation to inspect the accessibility tree, capture the light state, tap `darkModeToggle`, wait for the one-second motion to settle, and capture the dark state.
 
-- [ ] **Step 3: Compare against source geometry**
+- [x] **Step 3: Compare against source geometry**
 
 Verify the track ratio, cloud/star placement, sun/moon centers, 0.5-second crossfades, 1-second translation, clipping, and screen colors against the source SVG/video. Correct material discrepancies and rerun tests.
 
-- [ ] **Step 4: Document how to open and run the demo**
+- [x] **Step 4: Document how to open and run the demo**
 
 Add a concise README with the workspace path, iOS requirement, implementation notes, and screenshots.
 
-- [ ] **Step 5: Run final verification**
+- [x] **Step 5: Run final verification**
 
 Run the complete simulator test suite and a clean build through XcodeBuildMCP. Record the commands and results.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add README.md artifacts DarkModeSwitchDemo
