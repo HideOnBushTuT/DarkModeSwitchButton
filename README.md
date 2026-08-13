@@ -84,8 +84,9 @@ DarkModeSwitchButton (App repo)
 │   ├── DarkModeSwitchDemo/              # @main App 壳与测试计划
 │   ├── DarkModeSwitchDemoUITests/       # App 集成与持久化测试
 │   ├── DarkModeSwitchDemo.xcodeproj/
-│   │   └── Package.resolved             # 锁定 DarkModeToggle 1.0.0
+│   │   └── …/Package.resolved           # Project 打开方式的依赖锁
 │   └── DarkModeSwitchDemo.xcworkspace/
+│       └── …/Package.resolved           # Workspace 打开方式的相同依赖锁
 ├── artifacts/                           # Light/Dark 运行截图
 ├── docs/superpowers/                    # 设计与实施记录
 ├── README.md
