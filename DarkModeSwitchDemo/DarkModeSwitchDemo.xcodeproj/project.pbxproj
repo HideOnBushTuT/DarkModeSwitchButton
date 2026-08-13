@@ -12,6 +12,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		819A081AA68140ED94F13975 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B41F63D2DEDD0D5001A66F9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B41F6442DEDD0D5001A66F9;
+			remoteInfo = DarkModeSwitchDemo;
+		};
 		8B41F65D2DEDD0D6001A66F9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8B41F63D2DEDD0D5001A66F9 /* Project object */;
@@ -22,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		55E85E9673684AC8BD9CFC47 /* DarkModeSwitchDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DarkModeSwitchDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B41F6452DEDD0D5001A66F9 /* DarkModeSwitchDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DarkModeSwitchDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B41F65C2DEDD0D6001A66F9 /* DarkModeSwitchDemo.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DarkModeSwitchDemo.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -40,6 +48,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		A91AADBB42D64387B680B647 /* DarkModeSwitchDemoTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DarkModeSwitchDemoTests;
+			sourceTree = "<group>";
+		};
 		8B41F6472DEDD0D5001A66F9 /* DarkModeSwitchDemo */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = DarkModeSwitchDemo;
@@ -61,6 +74,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2E057BAC5C574FBB905AB3C5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B41F6422DEDD0D5001A66F9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -85,6 +105,7 @@
 			children = (
 				8BD71C052DEE41D800CEDD92 /* Config */,
 				8B41F6472DEDD0D5001A66F9 /* DarkModeSwitchDemo */,
+				A91AADBB42D64387B680B647 /* DarkModeSwitchDemoTests */,
 				8B41F65F2DEDD0D6001A66F9 /* DarkModeSwitchDemoUITests */,
 				8B41F6812DEDD23B001A66F9 /* Frameworks */,
 				8B41F6462DEDD0D5001A66F9 /* Products */,
@@ -95,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				8B41F6452DEDD0D5001A66F9 /* DarkModeSwitchDemo.app */,
+				55E85E9673684AC8BD9CFC47 /* DarkModeSwitchDemoTests.xctest */,
 				8B41F65C2DEDD0D6001A66F9 /* DarkModeSwitchDemo.xctest */,
 			);
 			name = Products;
@@ -110,6 +132,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		11EBB0396864492CB575C6E9 /* DarkModeSwitchDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1E144AC663AF4DB5B1A0CD64 /* Build configuration list for PBXNativeTarget "DarkModeSwitchDemoTests" */;
+			buildPhases = (
+				A4E7E3C0DE1446B1B6FD9D63 /* Sources */,
+				2E057BAC5C574FBB905AB3C5 /* Frameworks */,
+				F4FDEEC538B64F59B469B5FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				69002450916444C697FF427A /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A91AADBB42D64387B680B647 /* DarkModeSwitchDemoTests */,
+			);
+			name = DarkModeSwitchDemoTests;
+			packageProductDependencies = (
+			);
+			productName = DarkModeSwitchDemoTests;
+			productReference = 55E85E9673684AC8BD9CFC47 /* DarkModeSwitchDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		8B41F6442DEDD0D5001A66F9 /* DarkModeSwitchDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8B41F6662DEDD0D6001A66F9 /* Build configuration list for PBXNativeTarget "DarkModeSwitchDemo" */;
@@ -168,6 +213,10 @@
 				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
+					11EBB0396864492CB575C6E9 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 8B41F6442DEDD0D5001A66F9;
+					};
 					8B41F6442DEDD0D5001A66F9 = {
 						CreatedOnToolsVersion = 16.3;
 					};
@@ -195,12 +244,20 @@
 			projectRoot = "";
 			targets = (
 				8B41F6442DEDD0D5001A66F9 /* DarkModeSwitchDemo */,
+				11EBB0396864492CB575C6E9 /* DarkModeSwitchDemoTests */,
 				8B41F65B2DEDD0D6001A66F9 /* DarkModeSwitchDemoUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F4FDEEC538B64F59B469B5FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B41F6432DEDD0D5001A66F9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -218,6 +275,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A4E7E3C0DE1446B1B6FD9D63 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8B41F6412DEDD0D5001A66F9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -235,6 +299,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		69002450916444C697FF427A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B41F6442DEDD0D5001A66F9 /* DarkModeSwitchDemo */;
+			targetProxy = 819A081AA68140ED94F13975 /* PBXContainerItemProxy */;
+		};
 		8B41F65E2DEDD0D6001A66F9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8B41F6442DEDD0D5001A66F9 /* DarkModeSwitchDemo */;
@@ -243,6 +312,34 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		787DB0B9B1D74E88BD86E083 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.DarkModeSwitchDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DarkModeSwitchDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DarkModeSwitchDemo";
+			};
+			name = Debug;
+		};
+		35D4573CA118469C95EEDD46 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.DarkModeSwitchDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DarkModeSwitchDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DarkModeSwitchDemo";
+			};
+			name = Release;
+		};
 		8B41F6642DEDD0D6001A66F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -441,6 +538,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1E144AC663AF4DB5B1A0CD64 /* Build configuration list for PBXNativeTarget "DarkModeSwitchDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				787DB0B9B1D74E88BD86E083 /* Debug */,
+				35D4573CA118469C95EEDD46 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8B41F6402DEDD0D5001A66F9 /* Build configuration list for PBXProject "DarkModeSwitchDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

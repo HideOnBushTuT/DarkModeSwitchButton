@@ -19,6 +19,13 @@
     {
       "target" : {
         "containerPath" : "container:DarkModeSwitchDemo.xcodeproj",
+        "identifier" : "11EBB0396864492CB575C6E9",
+        "name" : "DarkModeSwitchDemoTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:DarkModeSwitchDemo.xcodeproj",
         "identifier" : "8B41F65B2DEDD0D6001A66F9",
         "name" : "DarkModeSwitchDemoUITests"
       }
