@@ -51,10 +51,11 @@ public struct DarkModeToggle: View {
                 / DarkModeToggleMetrics.referenceComponentSize.height,
             contentMode: .fit
         )
-        .accessibilityLabel("Dark mode")
-        .accessibilityValue(isDarkMode ? "Dark" : "Light")
+        .accessibilityLabel("Dark Mode")
+        .accessibilityValue(isDarkMode ? "On" : "Off")
         .accessibilityHint("Double tap to change appearance")
         .accessibilityIdentifier("darkModeToggle")
+        .accessibilityAddTraits(isDarkMode ? .isSelected : [])
     }
 }
 
