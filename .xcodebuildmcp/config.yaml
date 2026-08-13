@@ -6,7 +6,7 @@ enabledWorkflows:
   - simulator-management
   - ui-automation
 sessionDefaults:
-  workspacePath: "./DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace"
+  projectPath: "./DarkModeSwitchDemo/DarkModeSwitchDemo.xcodeproj"
   scheme: "DarkModeSwitchDemo"
   simulatorName: "iPhone Air"
   configuration: "Debug"

@@ -18,7 +18,7 @@ The resolved release is `2.0.0`. The Swift product and import name are
 
 - the `@main` application shell
 - `ContentView`, `@AppStorage`, page layout, and preferred App appearance
-- Xcode project, workspace, build configuration, and entitlements
+- Xcode project, build configuration, and entitlements
 - application UI tests
 - screenshots and project documentation
 
@@ -62,7 +62,7 @@ Run App UI tests:
 
 ```bash
 xcodebuildmcp simulator test \
-  --workspace-path DarkModeSwitchDemo.xcworkspace \
+  --project-path DarkModeSwitchDemo.xcodeproj \
   --scheme DarkModeSwitchDemo \
   --simulator-name "iPhone Air" \
   --configuration Debug

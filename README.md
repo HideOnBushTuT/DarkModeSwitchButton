@@ -56,10 +56,7 @@ cd DarkModeSwitchButton
 
 ### 3. 在 Xcode 运行
 
-打开以下任意一个容器：
-
-- `DarkModeSwitchDemo/DarkModeSwitchDemo.xcodeproj`
-- `DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace`
+打开 `DarkModeSwitchDemo/DarkModeSwitchDemo.xcodeproj`。
 
 选择 `DarkModeSwitchDemo` Scheme 和一个 iPhone Simulator，然后 Run。
 Xcode 会读取 `Package.resolved` 并下载
@@ -87,9 +84,7 @@ DarkModeSwitchButton (App repo)
 │   │   └── DarkModeSwitchDemo.xctestplan
 │   ├── DarkModeSwitchDemoUITests/       # App 集成与持久化测试
 │   ├── DarkModeSwitchDemo.xcodeproj/
-│   │   └── …/Package.resolved           # Project 打开方式的依赖锁
-│   └── DarkModeSwitchDemo.xcworkspace/
-│       └── …/Package.resolved           # Workspace 打开方式的相同依赖锁
+│   │   └── …/Package.resolved           # 依赖版本锁
 ├── artifacts/                           # Light/Dark 运行截图
 ├── docs/superpowers/                    # 设计与实施记录
 ├── README.md
@@ -320,7 +315,7 @@ xcodebuildmcp swift-package test \
 
 ```bash
 xcodebuildmcp simulator test \
-  --workspace-path DarkModeSwitchDemo/DarkModeSwitchDemo.xcworkspace \
+  --project-path DarkModeSwitchDemo/DarkModeSwitchDemo.xcodeproj \
   --scheme DarkModeSwitchDemo \
   --simulator-name "iPhone Air" \
   --configuration Debug
@@ -335,8 +330,7 @@ xcodebuildmcp simulator test \
 1. **File → Packages → Reset Package Caches**
 2. **File → Packages → Resolve Package Versions**
 
-项目既可以直接打开 `.xcodeproj`，也可以打开 `.xcworkspace`。当前远程依赖
-记录在 Xcode Project 中，不依赖某个只在 Workspace 里存在的本地目录。
+当前远程依赖记录在 Xcode Project 中；请直接打开 `.xcodeproj`。
 
 ### 仓库 URL 返回 404
 
