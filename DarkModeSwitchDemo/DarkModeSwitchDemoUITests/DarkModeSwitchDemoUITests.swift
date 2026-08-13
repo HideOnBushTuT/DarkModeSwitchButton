@@ -6,6 +6,40 @@ final class DarkModeSwitchDemoUITests: XCTestCase {
     }
 
     @MainActor
+    func testSystemModeUsesLightSystemAppearance() throws {
+        let app = launchFollowingSystem(appearance: .light)
+
+        let toggle = app.buttons["darkModeToggle"]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
+        XCTAssertEqual(toggle.value as? String, "Off")
+
+        let followSystemButton = app.buttons["followSystemAppearanceButton"]
+        XCTAssertTrue(followSystemButton.waitForExistence(timeout: 3))
+        XCTAssertEqual(followSystemButton.value as? String, "On")
+    }
+
+    @MainActor
+    func testManualToggleExitsAndButtonRestoresDarkSystemMode() throws {
+        let app = launchFollowingSystem(appearance: .dark)
+
+        let toggle = app.buttons["darkModeToggle"]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
+        XCTAssertEqual(toggle.value as? String, "On")
+
+        let followSystemButton = app.buttons["followSystemAppearanceButton"]
+        XCTAssertTrue(followSystemButton.waitForExistence(timeout: 3))
+        XCTAssertEqual(followSystemButton.value as? String, "On")
+
+        toggle.tap()
+        waitForValue("Off", on: app.buttons["darkModeToggle"])
+        waitForValue("Off", on: app.buttons["followSystemAppearanceButton"])
+
+        app.buttons["followSystemAppearanceButton"].tap()
+        waitForValue("On", on: app.buttons["darkModeToggle"])
+        waitForValue("On", on: app.buttons["followSystemAppearanceButton"])
+    }
+
+    @MainActor
     func testToggleChangesAndReversesWhileAnimationIsInFlight() throws {
         let app = launchInLightMode()
 
@@ -88,8 +122,20 @@ final class DarkModeSwitchDemoUITests: XCTestCase {
 
     @MainActor
     private func launchInLightMode() -> XCUIApplication {
+        XCUIDevice.shared.appearance = .light
         let app = XCUIApplication()
         app.launchArguments = ["--ui-testing-light-mode"]
+        app.launch()
+        return app
+    }
+
+    @MainActor
+    private func launchFollowingSystem(
+        appearance: XCUIDevice.Appearance
+    ) -> XCUIApplication {
+        XCUIDevice.shared.appearance = appearance
+        let app = XCUIApplication()
+        app.launchArguments = ["--ui-testing-system-mode"]
         app.launch()
         return app
     }
