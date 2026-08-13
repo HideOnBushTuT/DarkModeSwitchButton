@@ -168,23 +168,23 @@ git commit -m "feat(toggle): recreate animated day night control"
 - Modify: `DarkModeSwitchDemo/DarkModeSwitchDemo/DarkModeSwitchDemoApp.swift`
 - Modify: `DarkModeSwitchDemo/DarkModeSwitchDemoUITests/DarkModeSwitchDemoUITests.swift`
 
-- [ ] **Step 1: Write a failing UI state-change test**
+- [x] **Step 1: Write a failing UI state-change test**
 
 Launch with `-isDarkMode false`, locate `darkModeToggle`, verify its value is light, tap it, then verify its value is dark.
 
-- [ ] **Step 2: Run UI tests and confirm the expected failure**
+- [x] **Step 2: Run UI tests and confirm the expected failure**
 
 Expected: the template screen does not expose `darkModeToggle`.
 
-- [ ] **Step 3: Build the demo screen**
+- [x] **Step 3: Build the demo screen**
 
 Use `@AppStorage("isDarkMode")`. Place the toggle in a minimal centered screen whose source background transitions from `RGBA(205,231,255,1)` to `RGBA(83,92,114,1)`. Apply `.preferredColorScheme` so the control genuinely changes app appearance.
 
-- [ ] **Step 4: Run the full test suite**
+- [x] **Step 4: Run the full test suite**
 
 Expected: unit and UI tests pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add DarkModeSwitchDemo
