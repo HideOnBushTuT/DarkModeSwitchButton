@@ -100,21 +100,21 @@ git commit -m "test(toggle): lock down source geometry"
 - Create: `DarkModeSwitchDemo/DarkModeSwitchDemoPackage/Sources/DarkModeSwitchDemoFeature/DarkModeToggleArt.swift`
 - Modify: `DarkModeSwitchDemo/DarkModeSwitchDemoPackage/Tests/DarkModeSwitchDemoFeatureTests/DarkModeSwitchDemoFeatureTests.swift`
 
-- [ ] **Step 1: Write failing source-art tests**
+- [x] **Step 1: Write failing source-art tests**
 
 Assert four cloud groups, six circles per group, 21 stars, cloud durations `[3.5, 4.5, 2.5, 5.5]`, star-group durations `[3, 2, 1, 5]`, and representative exact coordinates/opacities from the source SVG.
 
-- [ ] **Step 2: Run tests and confirm the expected failure**
+- [x] **Step 2: Run tests and confirm the expected failure**
 
 Expected: compilation fails because `DarkModeToggleArt` does not exist.
 
-- [ ] **Step 3: Add exact data models and source values**
+- [x] **Step 3: Add exact data models and source values**
 
 Store cloud circles and stars in the original coordinate system. Keep group `0` stars static and assign animated groups `1...4` to their matching opacity durations.
 
-- [ ] **Step 4: Run tests and confirm they pass**
+- [x] **Step 4: Run tests and confirm they pass**
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add DarkModeSwitchDemo
