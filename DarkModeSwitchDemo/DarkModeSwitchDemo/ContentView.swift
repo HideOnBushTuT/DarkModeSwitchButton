@@ -10,7 +10,7 @@ struct ContentView: View {
             screenBackground
                 .ignoresSafeArea()
 
-            DarkModeToggle(isDarkMode: $isDarkMode)
+            DarkModeToggle(vividIsDarkMode: $isDarkMode)
                 .frame(width: 260)
                 .padding(32)
         }
@@ -23,8 +23,8 @@ struct ContentView: View {
 
     private var screenBackground: Color {
         isDarkMode
-            ? Color(red: 83 / 255, green: 92 / 255, blue: 114 / 255)
-            : Color(red: 205 / 255, green: 231 / 255, blue: 1)
+            ? Color(red: 66 / 255, green: 66 / 255, blue: 66 / 255)
+            : Color(red: 235 / 255, green: 246 / 255, blue: 1)
     }
 }
 
