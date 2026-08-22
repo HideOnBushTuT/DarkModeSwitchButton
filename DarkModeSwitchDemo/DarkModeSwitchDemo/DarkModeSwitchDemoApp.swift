@@ -11,6 +11,11 @@ struct DarkModeSwitchDemoApp: App {
                 AppAppearancePreference.light.rawValue,
                 forKey: AppAppearancePreference.storageKey
             )
+        } else if arguments.contains("--ui-testing-dark-mode") {
+            defaults.set(
+                AppAppearancePreference.dark.rawValue,
+                forKey: AppAppearancePreference.storageKey
+            )
         } else if arguments.contains("--ui-testing-system-mode") {
             defaults.set(
                 AppAppearancePreference.system.rawValue,

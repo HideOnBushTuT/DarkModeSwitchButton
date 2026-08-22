@@ -9,7 +9,7 @@ The application consumes the private `DarkModeToggle` Swift Package from:
 https://github.com/HideOnBushTuT/DarkModeToggle.git
 ```
 
-The resolved release is `3.0.1`. The Swift product and import name are
+The resolved release is `3.1.0`. The Swift product and import name are
 `DarkModeSwitchDemoFeature`.
 
 ## Repository boundary

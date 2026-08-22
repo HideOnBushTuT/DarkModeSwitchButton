@@ -13,8 +13,14 @@ struct ContentView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 24) {
-                DarkModeToggle(isDarkMode: isDarkModeBinding)
-                    .frame(width: 260)
+                toggleDemo("Original") {
+                    DarkModeToggle(isDarkMode: isDarkModeBinding)
+                        .accessibilityIdentifier("originalDarkModeToggle")
+                }
+
+                toggleDemo("Vivid") {
+                    DarkModeToggle(vividIsDarkMode: isDarkModeBinding)
+                }
 
                 Button {
                     storedAppearance = AppAppearancePreference.system.rawValue
@@ -30,11 +36,7 @@ struct ContentView: View {
                 }
                 .buttonStyle(.plain)
                 .font(.callout.weight(.semibold))
-                .foregroundStyle(
-                    isDarkMode
-                        ? Color.white.opacity(0.9)
-                        : Color.black.opacity(0.7)
-                )
+                .foregroundStyle(labelColor)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
                 .background(.ultraThinMaterial, in: Capsule())
@@ -74,8 +76,26 @@ struct ContentView: View {
 
     private var screenBackground: Color {
         isDarkMode
-            ? Color(red: 83 / 255, green: 92 / 255, blue: 114 / 255)
-            : Color(red: 205 / 255, green: 231 / 255, blue: 1)
+            ? Color(red: 66 / 255, green: 66 / 255, blue: 66 / 255)
+            : Color(red: 235 / 255, green: 246 / 255, blue: 1)
+    }
+
+    private var labelColor: Color {
+        isDarkMode ? .white.opacity(0.82) : .black.opacity(0.68)
+    }
+
+    private func toggleDemo<Content: View>(
+        _ title: LocalizedStringKey,
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        VStack(spacing: 12) {
+            Text(title)
+                .font(.headline.weight(.semibold))
+                .foregroundStyle(labelColor)
+
+            content()
+                .frame(width: 260)
+        }
     }
 }
 
