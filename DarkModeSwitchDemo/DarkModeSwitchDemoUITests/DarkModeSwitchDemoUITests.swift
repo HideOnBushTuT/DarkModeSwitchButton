@@ -24,6 +24,26 @@ final class DarkModeSwitchDemoUITests: XCTestCase {
     }
 
     @MainActor
+    func testOriginalAndVividStylesStaySynchronized() throws {
+        let app = launchInLightMode()
+        let originalToggle = app.buttons["originalDarkModeToggle"]
+        let vividToggle = app.buttons["darkModeToggle"]
+
+        XCTAssertTrue(originalToggle.waitForExistence(timeout: 3))
+        XCTAssertTrue(vividToggle.waitForExistence(timeout: 3))
+        XCTAssertEqual(originalToggle.value as? String, "Off")
+        XCTAssertEqual(vividToggle.value as? String, "Off")
+
+        originalToggle.tap()
+        waitForValue("On", on: originalToggle)
+        waitForValue("On", on: vividToggle)
+
+        vividToggle.tap()
+        waitForValue("Off", on: originalToggle)
+        waitForValue("Off", on: vividToggle)
+    }
+
+    @MainActor
     func testHorizontalDragCommitsOnceAndNextTapStillWorks() throws {
         let app = launchInLightMode()
         let toggle = app.buttons["darkModeToggle"]
