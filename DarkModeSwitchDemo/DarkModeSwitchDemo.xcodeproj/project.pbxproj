@@ -475,8 +475,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/HideOnBushTuT/DarkModeToggle.git";
 			requirement = {
-				branch = "codex/vivid-toggle-style";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

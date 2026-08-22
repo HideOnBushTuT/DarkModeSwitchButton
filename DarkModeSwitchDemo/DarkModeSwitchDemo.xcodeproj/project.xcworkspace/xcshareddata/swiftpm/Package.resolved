@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/HideOnBushTuT/DarkModeToggle.git",
       "state" : {
-        "branch" : "codex/vivid-toggle-style",
-        "revision" : "d3f7819c1a3058911bf120f8c4cf106b6cfb6529"
+        "revision" : "d95b51f96b47dfcd7e103a364a9d93c34329787a",
+        "version" : "3.1.0"
       }
     }
   ],

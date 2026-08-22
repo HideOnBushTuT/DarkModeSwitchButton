@@ -9,10 +9,8 @@ The application consumes the private `DarkModeToggle` Swift Package from:
 https://github.com/HideOnBushTuT/DarkModeToggle.git
 ```
 
-While the vivid style is under review, this integration branch resolves
-`codex/vivid-toggle-style` at `d3f7819c1a3058911bf120f8c4cf106b6cfb6529`.
-Move the App back to a semantic Package release before final integration. The
-Swift product and import name are `DarkModeSwitchDemoFeature`.
+The resolved release is `3.1.0`. The Swift product and import name are
+`DarkModeSwitchDemoFeature`.
 
 ## Repository boundary
 
@@ -35,8 +33,7 @@ Swift product and import name are `DarkModeSwitchDemoFeature`.
 
 Do not add an embedded local Package directory to this repository. Feature
 changes belong in the separate Package repository and must be consumed through
-a new semantic version. A remote feature branch may be pinned temporarily in an
-App review branch when both sides of a cross-repository change are under review.
+a new semantic version.
 
 ## SwiftUI conventions
 

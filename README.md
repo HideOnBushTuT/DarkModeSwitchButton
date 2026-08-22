@@ -1,7 +1,7 @@
 # Dark Mode Switch Button
 
-一个面向 iOS 17+ 的 SwiftUI 演示项目。当前页面展示更鲜明的日夜切换风格，
-并把开关作为真正的 App 外观控制使用；Swift Package 同时保留原有视觉风格。
+一个面向 iOS 17+ 的 SwiftUI 演示项目。当前页面同时展示 Original 与 Vivid
+两种日夜切换风格，并让它们共同控制真正的 App 外观。
 
 | Light | Dark |
 | --- | --- |
@@ -19,9 +19,8 @@
 - [DarkModeToggle](https://github.com/HideOnBushTuT/DarkModeToggle)：
   独立 Swift Package，保存组件源码、几何/素材测试和版本 Tag。
 
-在 Package 新风格审核期间，这个 App 分支暂时锁定远程
-`codex/vivid-toggle-style` 分支的提交 `d3f7819`。Package 发布新语义化版本后，
-App 会在最终集成前恢复为版本依赖；Clone 后不需要复制组件源码。
+App 当前通过 `DarkModeToggle 3.1.0` 使用两种组件风格，`Package.resolved`
+锁定了实际提交；Clone 后不需要复制组件源码。
 
 ## 运行环境
 
@@ -61,8 +60,7 @@ cd DarkModeSwitchButton
 
 选择 `DarkModeSwitchDemo` Scheme 和一个 iPhone Simulator，然后 Run。
 Xcode 会读取 `Package.resolved` 并下载
-`https://github.com/HideOnBushTuT/DarkModeToggle.git` 的
-`codex/vivid-toggle-style` 分支。
+`https://github.com/HideOnBushTuT/DarkModeToggle.git` 的 `3.1.0` 版本。
 
 使用 XcodeBuildMCP 构建：
 
@@ -137,8 +135,11 @@ App 本地 `ContentView.swift` 导入 `DarkModeSwitchDemoFeature` 并组合
 ```swift
 @AppStorage("isDarkMode") private var isDarkMode = false
 
-DarkModeToggle(vividIsDarkMode: $isDarkMode)
-    .preferredColorScheme(isDarkMode ? .dark : .light)
+VStack {
+    DarkModeToggle(isDarkMode: $isDarkMode)
+    DarkModeToggle(vividIsDarkMode: $isDarkMode)
+}
+.preferredColorScheme(isDarkMode ? .dark : .light)
 ```
 
 数据流如下：
@@ -147,7 +148,7 @@ DarkModeToggle(vividIsDarkMode: $isDarkMode)
 UserDefaults
     ⇅ @AppStorage("isDarkMode")
 ContentView (App repository)
-    ├── Binding<Bool> ⇄ DarkModeToggle 的已提交明暗端点
+    ├── Binding<Bool> ⇄ Original / Vivid 的同一个已提交明暗端点
     ├── preferredColorScheme ──→ 整个 WindowGroup 的 Light/Dark 外观
     └── screenBackground ──→ 演示页背景色
 
@@ -172,19 +173,25 @@ DarkModeToggle
 │   └── 方向、进度、钳制与预测终点
 ├── DarkModeToggleVisuals
 │   └── 可中断的当前呈现进度
-├── VividToggleTrack
+├── ToggleTrack（Original）
+│   ├── RoundedRectangle 背景、外边框与内高光
+│   ├── DayScene ──→ 4 组 Canvas 云层
+│   └── NightScene ──→ 22 颗 FourPointStar
+├── VividToggleTrack（Vivid）
 │   ├── RoundedRectangle 背景、外边框与 3 层移动光环
 │   ├── VividDayScene
 │   │   └── 2 组 Canvas 云层
 │   └── VividNightScene
 │       └── 6 颗缩放闪烁的 FourPointStar
 └── CelestialThumb
-    ├── VividSunDisc
-    └── VividMoonDisc + 3 个环形山
+    ├── SunDisc / MoonDisc + MoonOcclusionShape（Original）
+    └── VividSunDisc / VividMoonDisc + 3 个环形山（Vivid）
 ```
 
 调用 `DarkModeToggle(isDarkMode:)` 仍会进入原有 `ToggleTrack`、`DayScene`、
-`NightScene`、`SunDisc` 和月牙绘制路径；新 Demo 只通过不同初始化方式选择新风格。
+`NightScene`、`SunDisc` 和月牙绘制路径；调用
+`DarkModeToggle(vividIsDarkMode:)` 会进入新风格。Demo 同时调用两个初始化方式，
+并将它们绑定到同一个 `@AppStorage` 状态。
 
 ### 1. 自适应几何
 
@@ -339,8 +346,9 @@ xcodebuildmcp swift-package test \
   --configuration Debug
 ```
 
-### App：4 项 XCUITest
+### App：5 项 XCUITest
 
+- Original 与 Vivid 操作任意一个时会保持状态同步。
 - 动画尚未结束时快速反向切换，值仍能正确回到 `Off`。
 - 切换到 Dark 后终止并重新启动 App，`@AppStorage` 状态仍为 `On`。
 - 水平拖动可以进入/退出 Dark，且一次手势只提交一次。
@@ -375,18 +383,16 @@ gh auth status
 git ls-remote https://github.com/HideOnBushTuT/DarkModeToggle.git
 ```
 
-### Package 分支无法解析
+### Package 版本无法解析
 
-在跨仓库 PR 审核期间，确认远端存在 `codex/vivid-toggle-style` 分支，项目中的
-`Package.resolved` 应显示：
+确认远端存在 `3.1.0` Tag，项目中的 `Package.resolved` 应显示：
 
 - Identity：`darkmodetoggle`
-- Branch：`codex/vivid-toggle-style`
-- Revision：`d3f7819c1a3058911bf120f8c4cf106b6cfb6529`
+- Version：`3.1.0`
+- Revision：`d95b51f96b47dfcd7e103a364a9d93c34329787a`
 
-这个分支依赖只用于同时审核 Package 与 App。Package 合并并发布后，最终集成前
-应把 Xcode Project 改回 `upToNextMajorVersion`，并让 `Package.resolved` 记录
-新的语义化版本。不要在 App 仓库中重新创建同名本地 Package 目录。
+如果要开发 Package，请单独 Clone `DarkModeToggle`，提交并发布新版本；
+不要在 App 仓库中重新创建同名本地 Package 目录。
 
 ### Swift tools 版本不兼容
 
