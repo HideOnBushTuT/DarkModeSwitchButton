@@ -35,6 +35,16 @@
          </TestPlanReference>
       </TestPlans>
       <Testables>
+	     <TestableReference
+	        skipped = "NO">
+	        <BuildableReference
+	           BuildableIdentifier = "primary"
+	           BlueprintIdentifier = "11EBB0396864492CB575C6E9"
+	           BuildableName = "DarkModeSwitchDemoTests.xctest"
+	           BlueprintName = "DarkModeSwitchDemoTests"
+	           ReferencedContainer = "container:DarkModeSwitchDemo.xcodeproj">
+	        </BuildableReference>
+	     </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference

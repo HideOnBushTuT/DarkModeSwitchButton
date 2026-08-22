@@ -82,6 +82,7 @@ DarkModeSwitchButton (App repo)
 │   │   ├── DarkModeSwitchDemoApp.swift  # @main App 入口
 │   │   ├── ContentView.swift            # 状态、页面布局与 App 外观
 │   │   └── DarkModeSwitchDemo.xctestplan
+│   ├── DarkModeSwitchDemoTests/         # 三态偏好与迁移单元测试
 │   ├── DarkModeSwitchDemoUITests/       # App 集成与持久化测试
 │   ├── DarkModeSwitchDemo.xcodeproj/
 │   │   └── …/Package.resolved           # 依赖版本锁
@@ -108,13 +109,20 @@ DarkModeToggle (Package repo)
 └── THIRD_PARTY_NOTICES.md
 ```
 
-App Target 保持很薄：
+App Target 保持很薄。下面省略了 UI 测试使用的启动参数；实际的 `init` 还会在
+启动时迁移旧版 `isDarkMode` 偏好：
 
 ```swift
 import SwiftUI
 
 @main
 struct DarkModeSwitchDemoApp: App {
+    init() {
+        AppAppearancePreference.migrateLegacyPreferenceIfNeeded(
+            in: UserDefaults.standard
+        )
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -130,38 +138,48 @@ App 本地 `ContentView.swift` 导入 `DarkModeSwitchDemoFeature` 并组合
 
 ## SwiftUI 状态流
 
-核心状态只有一个 Bool：
+App 使用 `system`、`light`、`dark` 三态偏好；Package 仍只接收它需要的
+`Binding<Bool>`：
 
 ```swift
-@AppStorage("isDarkMode") private var isDarkMode = false
+@AppStorage(AppAppearancePreference.storageKey)
+private var storedAppearance = AppAppearancePreference.system.rawValue
+@Environment(\.colorScheme) private var systemColorScheme
 
 VStack {
-    DarkModeToggle(isDarkMode: $isDarkMode)
-    DarkModeToggle(vividIsDarkMode: $isDarkMode)
+    DarkModeToggle(isDarkMode: isDarkModeBinding)
+    DarkModeToggle(vividIsDarkMode: isDarkModeBinding)
 }
-.preferredColorScheme(isDarkMode ? .dark : .light)
+.preferredColorScheme(appearancePreference.preferredColorScheme)
 ```
 
 数据流如下：
 
 ```text
-UserDefaults
-    ⇅ @AppStorage("isDarkMode")
-ContentView (App repository)
-    ├── Binding<Bool> ⇄ Original / Vivid 的同一个已提交明暗端点
-    ├── preferredColorScheme ──→ 整个 WindowGroup 的 Light/Dark 外观
-    └── screenBackground ──→ 演示页背景色
+UserDefaults: system / light / dark
+    ⇅ @AppStorage("appearancePreference")
+ContentView + @Environment(\.colorScheme) (App repository)
+    ├── 解析后的 Binding<Bool> ⇄ Original / Vivid 的同一个已提交明暗端点
+    ├── 可选 preferredColorScheme ──→ App 外观
+    ├── 解析后的 Bool ──→ 演示页背景色
+    └── Follow System 按钮 ──→ system 偏好
 
 DarkModeToggle (Package repository)
     ├── Tap / VoiceOver ──→ 切换 Binding<Bool>
     └── DragGesture ──→ 0...1 呈现进度 ──→ 预测终点 ──→ Binding<Bool>
 ```
 
-- `@AppStorage` 让状态在 App 重启后保留。
+- 新安装默认使用 `system`。此时 `.preferredColorScheme(nil)`，系统设置变化会实时
+  更新开关、页面背景与 App 外观，不需要重启。
+- 手动操作开关会退出跟随系统模式，保存明确的 `light` 或 `dark` 选择；点击
+  `Follow System` 按钮可以随时恢复系统模式。
+- `@AppStorage` 让三态偏好在 App 重启后保留；旧版本的 `isDarkMode` 布尔值会在
+  首次启动时迁移，并删除旧键。
 - `@Binding` 让组件不拥有业务状态，可以接入 `@State`、`@AppStorage`
   或其他单一数据源。
-- `.preferredColorScheme` 把开关值真正应用到 App，而不只是播放一段动画。
-- `isDarkMode` 只保存最终端点；拖动中的画面由 Package 内部连续进度驱动。
+- `.preferredColorScheme` 在手动模式应用明确外观，在系统模式保持 `nil`。
+- App 将三态偏好解析成组件所需的最终明暗端点；拖动中的画面仍由 Package
+  内部连续进度驱动。
 - 松手才把预测终点写回 Binding，不需要计时器协调状态。
 
 ## 交互与动画组件拆解
@@ -191,7 +209,7 @@ DarkModeToggle
 调用 `DarkModeToggle(isDarkMode:)` 仍会进入原有 `ToggleTrack`、`DayScene`、
 `NightScene`、`SunDisc` 和月牙绘制路径；调用
 `DarkModeToggle(vividIsDarkMode:)` 会进入新风格。Demo 同时调用两个初始化方式，
-并将它们绑定到同一个 `@AppStorage` 状态。
+并将它们绑定到由三态外观偏好派生出的同一个 `Binding<Bool>`。
 
 ### 1. 自适应几何
 
@@ -302,7 +320,8 @@ progress = clamp(startProgress + translationX / translationTravel, 0 ... 1)
 - Label：`Dark Mode`
 - Value：`On` / `Off`
 - Hint：双击切换外观
-- Identifier：`darkModeToggle`
+- Identifier：Vivid 为 `darkModeToggle`，Original 在 Demo 中为
+  `originalDarkModeToggle`
 - Dark 状态增加 `isSelected` Trait
 
 因此视觉层虽然复杂，辅助功能树中仍然只是一个清晰、可操作的按钮。
@@ -346,8 +365,13 @@ xcodebuildmcp swift-package test \
   --configuration Debug
 ```
 
-### App：5 项 XCUITest
+### App：7 项单元测试 + 7 项 XCUITest
 
+单元测试覆盖三态偏好解析、系统外观映射、手动覆盖，以及旧版布尔偏好的迁移与
+清理。UI 测试覆盖：
+
+- 跟随系统时无需重启即可响应设备外观变化。
+- 手动操作会退出系统模式，Follow System 按钮可以恢复系统模式。
 - Original 与 Vivid 操作任意一个时会保持状态同步。
 - 动画尚未结束时快速反向切换，值仍能正确回到 `Off`。
 - 切换到 Dark 后终止并重新启动 App，`@AppStorage` 状态仍为 `On`。
